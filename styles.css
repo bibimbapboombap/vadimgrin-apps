@@ -1,0 +1,212 @@
+/* Just Chess Clock — landing page
+   Built from the Figma design "Landing — Chess Clock" (desktop 1440 / mobile 390). */
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+/* Always light: opts out of browser-forced dark mode. */
+html {
+  -webkit-text-size-adjust: 100%;
+  color-scheme: light;
+  background: #fff;
+}
+
+body {
+  margin: 0 auto;
+  max-width: 1536px;   /* 1440 design width + the 48px page gutters */
+  padding: 0 48px 48px;
+  background: #fff;
+  color: #141417;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+img { display: block; max-width: 100%; height: auto; }
+
+/* ---------- Masthead ---------- */
+
+.masthead {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px 0;
+}
+
+/* The exported logo frame is 144x104 with the mark (103x56) inset,
+   exactly as it sits in the design. */
+.masthead__logo { width: 144px; height: auto; }
+
+/* ---------- Hero ---------- */
+
+.hero {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  min-height: 644px;
+  background: #f2f2f4;
+  border-radius: 32px;
+}
+
+.hero__content {
+  flex: 1 1 auto;
+  padding: 153px 40px 96px 96px;
+  max-width: 620px;
+}
+
+.hero__icon {
+  width: 92px;
+  height: 92px;
+  border-radius: 24px;
+}
+
+.hero__title {
+  margin: 24px 0 0;
+  max-width: 480px;
+  font-family: "Podkova", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  font-size: 58px;
+  line-height: 62px;
+  letter-spacing: -0.025em;
+  color: #141417;
+}
+
+.hero__text {
+  margin: 8px 0 0;
+  max-width: 440px;
+  font-size: 18px;
+  line-height: 28px;
+  color: #717172;
+}
+
+.badge {
+  display: inline-block;
+  margin-top: 42px;
+  line-height: 0;
+  border-radius: 9px;
+}
+
+.badge img { width: 180px; height: 60px; }
+
+.badge:focus-visible { outline: 2px solid #141417; outline-offset: 3px; }
+
+/* ---------- Phone mockups ----------
+   Sized in percentages so the whole stack scales with the hero
+   exactly as it would under a uniform scale in the design. */
+
+.phones {
+  position: absolute;        /* overflows the card top and bottom, as designed */
+  top: 32px;
+  right: 3.42%;              /* 46 / 1344 */
+  width: 33.63%;             /* 452 / 1344 */
+  aspect-ratio: 452 / 642;
+}
+
+.phone {
+  position: absolute;
+  width: 59.29%;          /* 268 / 452 */
+  aspect-ratio: 268 / 580;
+  padding: 2.99%;         /* 8px bezel at full size */
+  background: #0b0b0d;
+  border-radius: 15.67% / 7.24%;   /* 42px at full size */
+  box-shadow: 0 30px 60px rgba(15, 15, 26, 0.28);
+}
+
+.phone--front { left: 0;     top: 0;     z-index: 2; }
+.phone--back  { left: 40.7%; top: 9.66%; background: #000; }
+
+.phone__screen {
+  width: 100%;
+  height: 100%;
+  border-radius: 13.49% / 6.03%;   /* 34px at full size */
+  object-fit: cover;
+}
+
+/* ---------- Footer ---------- */
+
+.footer {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 42px 0 0 96px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.footer__link {
+  color: #6b6b72;
+  text-decoration: none;
+}
+
+.footer__link:hover,
+.footer__link:focus-visible { color: #141417; text-decoration: underline; }
+
+.footer__dot { color: #c2c2c8; }
+
+/* ---------- Tablet: keep the desktop layout, ease the padding ---------- */
+
+@media (max-width: 1200px) {
+  .hero__content { padding: 120px 32px 80px 64px; }
+  .hero__title { font-size: 48px; line-height: 54px; }
+  .footer { padding-left: 64px; }
+}
+
+/* ---------- Mobile / narrow: stacked, centred ---------- */
+
+@media (max-width: 900px) {
+  body { padding: 0 16px 40px; }
+
+  .masthead { padding: 24px 0 0; }
+
+  .hero {
+    flex-direction: column;
+    align-items: center;
+    min-height: 0;
+    padding: 44px 24px;
+    border-radius: 28px;
+  }
+
+  .hero__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0;
+    max-width: 420px;
+    width: 100%;
+    text-align: center;
+  }
+
+  .hero__title { font-size: 40px; line-height: 44px; }
+
+  .hero__text { font-size: 16px; line-height: 24px; }
+
+  .badge { margin-top: 24px; }
+
+  .phones {
+    position: static;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-self: center;
+    width: 100%;
+    max-width: 268px;
+    margin: 24px 0 0;
+    aspect-ratio: auto;
+  }
+
+  .phone {
+    position: static;
+    width: 100%;
+    box-shadow: 0 20px 40px rgba(15, 15, 26, 0.24);
+  }
+
+  .footer {
+    justify-content: center;
+    padding: 24px 0 0;
+  }
+}
+
+@media (max-width: 380px) {
+  .hero { padding: 36px 16px; }
+  .hero__title { font-size: 34px; line-height: 38px; }
+}
