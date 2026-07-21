@@ -28,17 +28,18 @@ body {
   padding: 80px 24px 96px;
 }
 
+/* Matches .footer__link on the landing page. */
 .back {
   display: inline-block;
   margin-bottom: 32px;
-  color: #717172;
+  color: #6b6b72;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 500;
   text-decoration: none;
 }
 
 .back:hover,
-.back:focus-visible { color: #141417; }
+.back:focus-visible { color: #141417; text-decoration: underline; }
 
 .back__chevron { margin-right: 2px; }
 
