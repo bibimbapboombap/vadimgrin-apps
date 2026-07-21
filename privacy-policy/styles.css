@@ -28,6 +28,20 @@ body {
   padding: 80px 24px 96px;
 }
 
+.back {
+  display: inline-block;
+  margin-bottom: 32px;
+  color: #717172;
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.back:hover,
+.back:focus-visible { color: #141417; }
+
+.back__chevron { margin-right: 2px; }
+
 h1 {
   margin: 0 0 8px;
   font-family: "Podkova", Georgia, "Times New Roman", serif;

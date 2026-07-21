@@ -33,6 +33,14 @@ img { display: block; max-width: 100%; height: auto; }
   padding: 16px 0;
 }
 
+.masthead__link {
+  display: block;
+  line-height: 0;
+  border-radius: 8px;
+}
+
+.masthead__link:focus-visible { outline: 2px solid #141417; outline-offset: 4px; }
+
 /* The exported logo frame is 144x104 with the mark (103x56) inset,
    exactly as it sits in the design. */
 .masthead__logo { width: 144px; height: auto; }
