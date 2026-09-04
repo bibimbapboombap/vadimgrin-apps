@@ -415,10 +415,9 @@ img { display: block; max-width: 100%; height: auto; }
   .app--god .plate { min-height: 0; }
 
   /* Type scale from the 390px mock: titles stay centred, body copy reads
-     left-aligned in a full-width block. */
+     left-aligned in a full-width block. The hero keeps its desktop size
+     (68 / 18) at every width — deliberately larger than the mock. */
   .app__copy { width: 100%; }
-  .hero__title { font-size: 48px; }
-  .hero__lede { font-size: 16px; line-height: 1.5; }
   .app__title--chess,
   .app__title--shapes,
   .app__title--god { font-size: 40px; text-align: center; }
