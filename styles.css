@@ -1,6 +1,7 @@
 /* Just Apps — landing hub for Vadym Grin's iOS apps.
    Built from the Figma "My Apps" file (Apps-Desktop 1200 / Apps-Mobile 390).
-   Header pill + marker highlight + scroll-reveal mirror the /consult pages. */
+   Header pill, full-bleed sky hero, marker highlight, entrance cascade and
+   scroll-reveal all mirror the /consult pages. */
 
 :root {
   --bg: #fcfcfc;
@@ -9,6 +10,7 @@
   --muted: #717172;    /* app descriptions */
   --label: #555555;    /* nav, privacy, gabarito labels */
   --tag-bg: #f7f9fb;
+  --tag-stroke: #dae1e9;
   --tag-ink: #333333;
   --marker: #fee194;   /* hero highlight */
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
@@ -32,6 +34,7 @@ body {
   color: var(--ink);
   font-family: "Gabarito", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;   /* guards the full-bleed hero on narrow screens */
 }
 
 img { display: block; max-width: 100%; height: auto; }
@@ -39,6 +42,8 @@ img { display: block; max-width: 100%; height: auto; }
 /* ---------------------------------------------------------------- masthead */
 
 .masthead {
+  position: relative;
+  z-index: 2;
   max-width: 1200px;
   margin: 0 auto;
   padding: 16px var(--gutter) 0;
@@ -75,19 +80,40 @@ img { display: block; max-width: 100%; height: auto; }
 .nav__item:hover,
 .nav__item:focus-visible { color: var(--ink); }
 
-/* -------------------------------------------------------------------- hero */
+/* -------------------------------------------------------------------- hero
+   Full-bleed band (like /consult): the sky photo covers the whole width, the
+   text sits centred over it, and a wash at the top blends into the masthead. */
 
 .hero {
-  max-width: 1200px;
-  margin: 32px auto 0;
-  padding: 40px var(--gutter) 72px;
-  background-image: url("assets/hero-sky.jpg?v=20260904");
-  background-size: cover;
-  background-position: center 35%;
-  text-align: center;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  margin-top: 24px;
+  padding: 48px var(--gutter) 72px;
+  min-height: 348px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.hero__inner { max-width: 720px; margin: 0 auto; }
+.hero__bg { position: absolute; inset: 0; z-index: -1; }
+.hero__bg img { width: 100%; height: 100%; object-fit: cover; object-position: center 38%; }
+
+/* Wash so the top of the photo fades out of the masthead's ground. */
+.hero__bg::after {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 60%;
+  background: linear-gradient(to bottom,
+      var(--bg) 0%,
+      rgba(252, 252, 252, 0.92) 20%,
+      rgba(252, 252, 252, 0.55) 50%,
+      rgba(252, 252, 252, 0) 100%);
+  pointer-events: none;
+}
+
+.hero__inner { max-width: 720px; text-align: center; }
 
 .hero__title {
   margin: 0;
@@ -100,7 +126,7 @@ img { display: block; max-width: 100%; height: auto; }
 }
 
 /* Marker highlight drawn under the glyphs, painted left-to-right — the same
-   motion as the /consult hero. */
+   motion as /consult. Its lower edge sits on the word's baseline. */
 .hero__title mark {
   background: none;
   color: inherit;
@@ -113,15 +139,15 @@ img { display: block; max-width: 100%; height: auto; }
   position: absolute;
   left: -0.06em;
   right: -0.06em;
-  bottom: 0.06em;
-  height: 0.5em;
+  bottom: 0.2em;        /* raised to the baseline (clears the p descenders) */
+  height: 0.46em;
   background: var(--marker);
   border-radius: 3px;
   z-index: -1;
   transform: scaleX(0);
   transform-origin: left center;
   animation: marker 0.42s cubic-bezier(0.62, 0.04, 0.4, 1) both;
-  animation-delay: 0.5s;
+  animation-delay: 1.05s;   /* after the title has dropped in */
 }
 
 @keyframes marker { to { transform: scaleX(1); } }
@@ -134,9 +160,29 @@ img { display: block; max-width: 100%; height: auto; }
   color: var(--tag-ink);
 }
 
+/* --------------------------------------------------- top entrance cascade
+   Logo, nav and hero copy drop in one after another on load — the same curve
+   and stagger as the /consult hero. */
+@keyframes appEnter {
+  from { opacity: 0; transform: translateY(-28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.js .masthead__logo,
+.js .nav,
+.js .hero__title,
+.js .hero__lede {
+  animation: appEnter 0.7s var(--ease) both;
+}
+
+.js .masthead__logo { animation-delay: 0.1s; }
+.js .nav            { animation-delay: 0.25s; }
+.js .hero__title    { animation-delay: 0.4s; }
+.js .hero__lede     { animation-delay: 0.52s; }
+
 /* ------------------------------------------------------------------- plates */
 
-.app { padding: 0 var(--gutter); margin-top: 32px; }
+.app { padding: 0 var(--gutter); margin-top: 128px; }
 
 .plate {
   position: relative;
@@ -191,9 +237,11 @@ img { display: block; max-width: 100%; height: auto; }
   transition: opacity 0.15s ease, transform 0.1s ease;
 }
 .badge img { width: 180px; height: 60px; }
-.badge:hover { opacity: 0.85; }
-.badge:active { opacity: 1; transform: translateY(1px); }
+.badge:not(.badge--nolink):hover { opacity: 0.85; }
+.badge:not(.badge--nolink):active { opacity: 1; transform: translateY(1px); }
 .badge:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+/* Shapes badge is shown but not yet linked. */
+.badge--nolink { cursor: default; }
 
 .plate__privacy {
   font-size: 16px;
@@ -203,18 +251,29 @@ img { display: block; max-width: 100%; height: auto; }
 .plate__privacy:hover,
 .plate__privacy:focus-visible { color: var(--ink); text-decoration: underline; }
 
-/* "In Development" tag */
+/* Desktop: the privacy link lives at the bottom of the content column.
+   Its stacked twin (under the screenshots) is hidden until tablet width. */
+.plate__privacy--under { display: none; }
+
+/* "In Development" tag — fixed 178px pill, per Figma. */
 .tag {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 16px 8px 8px;
+  justify-content: flex-start;
+  gap: 10px;
+  width: 178px;
+  height: 40px;
+  padding: 0 16px;
   background: var(--tag-bg);
+  border: 1px solid var(--tag-stroke);
   border-radius: 100px;
   font-size: 16px;
+  line-height: 24px;
+  white-space: nowrap;   /* the fixed 178px is sized for one line */
   color: var(--tag-ink);
 }
 .tag__icon {
+  flex: 0 0 24px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -224,7 +283,7 @@ img { display: block; max-width: 100%; height: auto; }
   border-radius: 6px;
   color: #000;
 }
-.tag__icon svg { width: 15px; height: 12px; }
+.tag__icon svg { width: 18px; height: 18px; }
 
 /* ---------------------------------------------------------- phone mockups
    Percentage-sized so the overlapping stack scales as one unit, matching the
@@ -258,7 +317,7 @@ img { display: block; max-width: 100%; height: auto; }
   object-fit: cover;
 }
 
-/* God Mode iPad (shadow baked into the PNG) */
+/* God Mode iPad (shadow baked into the JPG, flattened on the plate colour) */
 .app--god .plate { min-height: 498px; }
 .ipad {
   position: absolute;
@@ -270,16 +329,17 @@ img { display: block; max-width: 100%; height: auto; }
 }
 .ipad__img { width: 100%; height: auto; }
 
-/* ------------------------------------------------------------------ footer */
+/* ------------------------------------------------------------------ footer
+   Re-uses the /consult footer: tight logo mark at 116px, generous spacing. */
 
 .footer {
   max-width: 1200px;
-  margin: 72px auto 0;
-  padding: 40px var(--gutter) 56px;
+  margin: 128px auto 0;
+  padding: 48px var(--gutter) 96px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 24px;
+  gap: 48px;
 }
 .footer__logo { display: block; line-height: 0; border-radius: 8px; }
 .footer__logo img { width: 116px; height: auto; }
@@ -287,6 +347,7 @@ img { display: block; max-width: 100%; height: auto; }
 
 .footer__social {
   display: flex;
+  align-items: center;
   gap: 24px;
   margin: 0;
   padding: 0;
@@ -294,17 +355,19 @@ img { display: block; max-width: 100%; height: auto; }
 }
 .footer__social a {
   display: block;
+  width: 24px;
+  height: 24px;
   line-height: 0;
   opacity: 0.9;
   transition: opacity 0.15s ease;
 }
 .footer__social a:hover,
 .footer__social a:focus-visible { opacity: 1; }
-.footer__social img { width: 24px; height: 24px; }
+.footer__social img { width: 100%; height: 100%; object-fit: contain; }
 
 /* ------------------------------------------------------------ scroll reveal
-   Gated on .js (set by the head script) so content is never hidden if the
-   script fails. apps.js adds .is-visible as each section enters the viewport. */
+   Gated on .js (set inline) so content is never hidden if the script fails.
+   apps.js adds .is-visible as each section enters the viewport. */
 
 .js .js-reveal {
   opacity: 0;
@@ -316,6 +379,8 @@ img { display: block; max-width: 100%; height: auto; }
 /* ---------------------------------------------------------------- tablet */
 
 @media (max-width: 1000px) {
+  .app { margin-top: 72px; }
+
   .plate {
     flex-direction: column;
     align-items: center;
@@ -344,6 +409,12 @@ img { display: block; max-width: 100%; height: auto; }
   .phone--front { order: 1; }
 
   .ipad { position: static; transform: none; width: 100%; max-width: 520px; margin: 0 auto; }
+
+  /* Privacy link moves out of the content column to sit under the screenshots. */
+  .plate__privacy--in { display: none; }
+  .plate__privacy--under { display: block; margin-top: 4px; }
+
+  .footer { margin-top: 72px; }
 }
 
 /* ---------------------------------------------------------------- mobile */
@@ -353,7 +424,7 @@ img { display: block; max-width: 100%; height: auto; }
 
   .nav { width: 100%; justify-content: center; gap: 20px; }
 
-  .hero { padding: 28px 16px 48px; border-radius: 0; }
+  .hero { padding: 32px 16px 48px; }
   .hero__title { font-size: 44px; }
   .hero__lede { font-size: 16px; }
 
@@ -367,6 +438,10 @@ img { display: block; max-width: 100%; height: auto; }
 
 @media (prefers-reduced-motion: reduce) {
   .badge { transition: none; }
+  .js .masthead__logo,
+  .js .nav,
+  .js .hero__title,
+  .js .hero__lede { animation: none; }
   .hero__title mark::before { animation: none; transform: scaleX(1); }
   .js .js-reveal { transition: none; opacity: 1; transform: none; }
 }
