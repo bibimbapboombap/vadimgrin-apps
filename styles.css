@@ -461,6 +461,9 @@ img { display: block; max-width: 100%; height: auto; }
 
   .hero { padding: 32px 16px 48px; min-height: 264px; }
 
+  /* Title comes down on phones; the lede stays at its 18px desktop size. */
+  .hero__title { font-size: 44px; }
+
   /* No marker on phones — the 390 mock has no highlight behind "Apps". */
   .hero__title mark::before { display: none; }
 }
