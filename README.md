@@ -96,3 +96,8 @@ HTML files themselves are not cached by Cloudflare (they return
 - `hero-sky.jpg` and `god-ipad.jpg` were re-compressed from the raw Figma
   exports (968 KB → 122 KB; 497 KB PNG → 37 KB JPG flattened on the plate
   colour). Keep them optimised if re-exported.
+- The phone screenshots render at 252 CSS px, so they ship at **two
+  densities**: `screen-*.png` (504px, 2x) and `screen-*-3x.png` (756px, 3x),
+  selected with `srcset`. Without the 3x files, DPR-3 phones upscale the 2x
+  ones and the screens look soft. Export both if they are ever redone — the
+  app icons (276px) and `god-ipad.jpg` are already dense enough.
