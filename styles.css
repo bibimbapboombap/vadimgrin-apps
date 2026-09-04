@@ -113,7 +113,10 @@ img { display: block; max-width: 100%; height: auto; }
 }
 
 .hero__bg { position: absolute; inset: 0; z-index: -1; }
-.hero__bg img { width: 100%; height: 100%; object-fit: cover; object-position: center 38%; }
+/* hero-sky.jpg is already the crop from the design (1200x348). Anchored to the
+   bottom so the city skyline stays in frame at every width — any trimming
+   `cover` has to do comes off the sky at the top instead. */
+.hero__bg img { width: 100%; height: 100%; object-fit: cover; object-position: center bottom; }
 
 /* Wash so the top of the photo fades out of the masthead's ground. */
 .hero__bg::after {
@@ -348,9 +351,11 @@ img { display: block; max-width: 100%; height: auto; }
 /* ------------------------------------------------------------------ footer
    Re-uses the /consult footer: tight logo mark at 116px, generous spacing. */
 
+/* 32px + the footer's own 48px top padding = the same 80px gap the /consult
+   page leaves between its last block and the footer logo. */
 .footer {
   max-width: 1200px;
-  margin: 128px auto 0;
+  margin: 32px auto 0;
   padding: 48px var(--gutter) 96px;
   display: flex;
   flex-direction: column;
@@ -440,7 +445,7 @@ img { display: block; max-width: 100%; height: auto; }
   .plate__privacy--in { display: none; }
   .plate__privacy--under { display: block; margin-top: 4px; }
 
-  .footer { margin-top: 72px; }
+  .footer { margin-top: 32px; }
 }
 
 /* ---------------------------------------------------------------- mobile */
@@ -448,10 +453,13 @@ img { display: block; max-width: 100%; height: auto; }
 @media (max-width: 620px) {
   :root { --gutter: 16px; }
 
-  /* Full-width pill, as in the 390px mock. */
-  .nav { width: 100%; justify-content: center; gap: 20px; }
+  /* Pill hugs its content, same as desktop. */
+  .nav { gap: 20px; }
 
-  .hero { padding: 32px 16px 48px; }
+  .hero { padding: 32px 16px 48px; min-height: 264px; }
+
+  /* No marker on phones — the 390 mock has no highlight behind "Apps". */
+  .hero__title mark::before { display: none; }
 }
 
 /* ------------------------------------------------------- reduced motion */
