@@ -105,10 +105,14 @@ img { display: block; max-width: 100%; height: auto; }
   isolation: isolate;
   overflow: hidden;
   margin-top: 24px;
-  padding: 48px var(--gutter) 72px;
+  /* Top-aligned rather than centred, so the copy sits high in the band with
+     the sky and skyline below it — and so the gap under the nav is exactly
+     margin-top + padding-top (24 + 40 = 64) instead of being halved by
+     centring slack. */
+  padding: 40px var(--gutter) 72px;
   min-height: 348px;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
 }
 
