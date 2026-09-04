@@ -1,229 +1,372 @@
-/* Just Chess Clock — landing page
-   Built from the Figma design "Landing — Chess Clock" (desktop 1440 / mobile 390). */
+/* Just Apps — landing hub for Vadym Grin's iOS apps.
+   Built from the Figma "My Apps" file (Apps-Desktop 1200 / Apps-Mobile 390).
+   Header pill + marker highlight + scroll-reveal mirror the /consult pages. */
+
+:root {
+  --bg: #fcfcfc;
+  --plate: #f2f2f4;
+  --ink: #141417;      /* app titles */
+  --muted: #717172;    /* app descriptions */
+  --label: #555555;    /* nav, privacy, gabarito labels */
+  --tag-bg: #f7f9fb;
+  --tag-ink: #333333;
+  --marker: #fee194;   /* hero highlight */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --gutter: 24px;
+  color-scheme: light;
+}
 
 *,
 *::before,
 *::after { box-sizing: border-box; }
 
-/* Always light: opts out of browser-forced dark mode. */
 html {
   -webkit-text-size-adjust: 100%;
   color-scheme: light;
-  background: #fff;
+  background: var(--bg);
 }
 
 body {
-  margin: 0 auto;
-  max-width: 1536px;   /* 1440 design width + the 48px page gutters */
-  padding: 0 48px 48px;
-  background: #fff;
-  color: #141417;
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "Gabarito", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
 img { display: block; max-width: 100%; height: auto; }
 
-/* ---------- Masthead ---------- */
+/* ---------------------------------------------------------------- masthead */
 
 .masthead {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px var(--gutter) 0;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  padding: 16px 0;
+  gap: 20px;
 }
 
-.masthead__link {
-  display: block;
-  line-height: 0;
-  border-radius: 8px;
+.masthead__logo { display: block; line-height: 0; border-radius: 8px; }
+.masthead__logo img { width: 144px; height: auto; }
+.masthead__logo:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; }
+
+/* nav pill */
+.nav {
+  display: inline-flex;
+  align-items: center;
+  gap: 24px;
+  padding: 17px 24px;
+  background: #fff;
+  border-radius: 100px;
+  box-shadow: 0 1px 2px rgba(15, 15, 26, 0.05), 0 6px 20px rgba(15, 15, 26, 0.05);
 }
 
-.masthead__link:focus-visible { outline: 2px solid #141417; outline-offset: 4px; }
+.nav__item {
+  font-size: 16px;
+  line-height: 1.2;
+  color: var(--label);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
 
-/* The exported logo frame is 144x104 with the mark (103x56) inset,
-   exactly as it sits in the design. */
-.masthead__logo { width: 144px; height: auto; }
+.nav__item.is-active { color: var(--ink); font-weight: 500; }
+.nav__item:hover,
+.nav__item:focus-visible { color: var(--ink); }
 
-/* ---------- Hero ---------- */
+/* -------------------------------------------------------------------- hero */
 
 .hero {
+  max-width: 1200px;
+  margin: 32px auto 0;
+  padding: 40px var(--gutter) 72px;
+  background-image: url("assets/hero-sky.jpg?v=20260904");
+  background-size: cover;
+  background-position: center 35%;
+  text-align: center;
+}
+
+.hero__inner { max-width: 720px; margin: 0 auto; }
+
+.hero__title {
+  margin: 0;
+  font-family: "Bricolage Grotesque", Georgia, serif;
+  font-weight: 800;
+  font-size: 68px;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  color: var(--tag-ink);
+}
+
+/* Marker highlight drawn under the glyphs, painted left-to-right — the same
+   motion as the /consult hero. */
+.hero__title mark {
+  background: none;
+  color: inherit;
   position: relative;
+  isolation: isolate;
+}
+
+.hero__title mark::before {
+  content: "";
+  position: absolute;
+  left: -0.06em;
+  right: -0.06em;
+  bottom: 0.06em;
+  height: 0.5em;
+  background: var(--marker);
+  border-radius: 3px;
+  z-index: -1;
+  transform: scaleX(0);
+  transform-origin: left center;
+  animation: marker 0.42s cubic-bezier(0.62, 0.04, 0.4, 1) both;
+  animation-delay: 0.5s;
+}
+
+@keyframes marker { to { transform: scaleX(1); } }
+
+.hero__lede {
+  margin: 24px auto 0;
+  max-width: 677px;
+  font-size: 18px;
+  line-height: 1.5;
+  color: var(--tag-ink);
+}
+
+/* ------------------------------------------------------------------- plates */
+
+.app { padding: 0 var(--gutter); margin-top: 32px; }
+
+.plate {
+  position: relative;
+  max-width: 976px;
+  min-height: 623px;
+  margin: 0 auto;
+  padding: 64px;
   display: flex;
-  align-items: flex-start;
-  min-height: 644px;
-  background: #f2f2f4;
+  align-items: center;
+  background: var(--plate);
   border-radius: 32px;
 }
 
-.hero__content {
-  flex: 1 1 auto;
-  padding: 153px 40px 96px 96px;
-  max-width: 620px;
+.plate__content {
+  position: relative;
+  z-index: 1;
+  width: 380px;
+  flex: 0 0 380px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 42px;
 }
 
-.hero__icon {
-  width: 92px;
-  height: 92px;
-  border-radius: 24px;
+.app__intro { display: flex; flex-direction: column; gap: 24px; }
+
+.app__icon { width: 92px; height: 92px; border-radius: 22px; }
+
+.app__title {
+  margin: 0;
+  color: var(--ink);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
 }
 
-.hero__title {
-  margin: 24px 0 0;
-  max-width: 480px;
-  font-family: "Podkova", Georgia, "Times New Roman", serif;
-  font-weight: 700;
-  font-size: 58px;
-  line-height: 62px;
-  letter-spacing: -0.025em;
-  color: #141417;
-}
+.app__title--chess { font-family: "Podkova", Georgia, serif; font-weight: 700; font-size: 58px; }
+.app__title--shapes { font-family: "Asap", sans-serif; font-weight: 800; font-size: 54px; }
+.app__title--god { font-family: "IM Fell English", Georgia, serif; font-weight: 400; font-size: 58px; letter-spacing: 0; }
 
-.hero__text {
-  margin: 8px 0 0;
-  max-width: 440px;
+.app__desc {
+  margin: 16px 0 0;
+  font-family: "Inter", sans-serif;
   font-size: 18px;
-  line-height: 28px;
-  color: #717172;
+  line-height: 1.55;
+  color: var(--muted);
 }
 
 .badge {
   display: inline-block;
-  margin-top: 42px;
   line-height: 0;
   border-radius: 9px;
   transition: opacity 0.15s ease, transform 0.1s ease;
 }
-
 .badge img { width: 180px; height: 60px; }
-
 .badge:hover { opacity: 0.85; }
-
 .badge:active { opacity: 1; transform: translateY(1px); }
+.badge:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
 
-.badge:focus-visible { outline: 2px solid #141417; outline-offset: 3px; }
-
-@media (prefers-reduced-motion: reduce) {
-  .badge { transition: none; }
+.plate__privacy {
+  font-size: 16px;
+  color: var(--label);
+  text-decoration: none;
 }
+.plate__privacy:hover,
+.plate__privacy:focus-visible { color: var(--ink); text-decoration: underline; }
 
-/* ---------- Phone mockups ----------
-   Sized in percentages so the whole stack scales with the hero
-   exactly as it would under a uniform scale in the design. */
+/* "In Development" tag */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px 8px 8px;
+  background: var(--tag-bg);
+  border-radius: 100px;
+  font-size: 16px;
+  color: var(--tag-ink);
+}
+.tag__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background: #fff;
+  border-radius: 6px;
+  color: #000;
+}
+.tag__icon svg { width: 15px; height: 12px; }
+
+/* ---------------------------------------------------------- phone mockups
+   Percentage-sized so the overlapping stack scales as one unit, matching the
+   Figma group (452x642: front at 0,0, back at 40.7% / 9.66%). */
 
 .phones {
-  position: absolute;        /* overflows the card top and bottom, as designed */
-  top: 32px;
-  right: 3.42%;              /* 46 / 1344 */
-  width: 33.63%;             /* 452 / 1344 */
+  position: absolute;
+  right: 40px;
+  top: 50%;
+  transform: translateY(-52%);
+  width: 452px;
   aspect-ratio: 452 / 642;
 }
 
 .phone {
   position: absolute;
-  width: 59.29%;          /* 268 / 452 */
+  width: 59.29%;            /* 268 / 452 */
   aspect-ratio: 268 / 580;
-  padding: 2.99%;         /* 8px bezel at full size */
+  padding: 2.99%;
   background: #0b0b0d;
-  border-radius: 15.67% / 7.24%;   /* 42px at full size */
+  border-radius: 15.67% / 7.24%;
   box-shadow: 0 30px 60px rgba(15, 15, 26, 0.28);
 }
-
 .phone--front { left: 0;     top: 0;     z-index: 2; }
-.phone--back  { left: 40.7%; top: 9.66%; background: #000; }
+.phone--back  { left: 40.7%; top: 9.66%; background: #000; z-index: 1; }
 
 .phone__screen {
   width: 100%;
   height: 100%;
-  border-radius: 13.49% / 6.03%;   /* 34px at full size */
+  border-radius: 13.49% / 6.03%;
   object-fit: cover;
 }
 
-/* ---------- Footer ---------- */
+/* God Mode iPad (shadow baked into the PNG) */
+.app--god .plate { min-height: 498px; }
+.ipad {
+  position: absolute;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 560px;
+  max-width: 52%;
+}
+.ipad__img { width: 100%; height: auto; }
+
+/* ------------------------------------------------------------------ footer */
 
 .footer {
+  max-width: 1200px;
+  margin: 72px auto 0;
+  padding: 40px var(--gutter) 56px;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 14px;
-  padding: 42px 0 0 96px;
-  font-size: 16px;
-  font-weight: 500;
+  gap: 24px;
 }
+.footer__logo { display: block; line-height: 0; border-radius: 8px; }
+.footer__logo img { width: 116px; height: auto; }
+.footer__logo:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; }
 
-.footer__link {
-  color: #6b6b72;
-  text-decoration: none;
+.footer__social {
+  display: flex;
+  gap: 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
-
-.footer__link:hover,
-.footer__link:focus-visible { color: #141417; text-decoration: underline; }
-
-.footer__dot { color: #c2c2c8; }
-
-/* ---------- Tablet: keep the desktop layout, ease the padding ---------- */
-
-@media (max-width: 1200px) {
-  .hero__content { padding: 120px 32px 80px 64px; }
-  .hero__title { font-size: 48px; line-height: 54px; }
-  .footer { padding-left: 64px; }
+.footer__social a {
+  display: block;
+  line-height: 0;
+  opacity: 0.9;
+  transition: opacity 0.15s ease;
 }
+.footer__social a:hover,
+.footer__social a:focus-visible { opacity: 1; }
+.footer__social img { width: 24px; height: 24px; }
 
-/* ---------- Mobile / narrow: stacked, centred ---------- */
+/* ------------------------------------------------------------ scroll reveal
+   Gated on .js (set by the head script) so content is never hidden if the
+   script fails. apps.js adds .is-visible as each section enters the viewport. */
 
-@media (max-width: 900px) {
-  body { padding: 0 16px 40px; }
+.js .js-reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+}
+.js .js-reveal.is-visible { opacity: 1; transform: translateY(0); }
 
-  .masthead { padding: 24px 0 0; }
+/* ---------------------------------------------------------------- tablet */
 
-  .hero {
+@media (max-width: 1000px) {
+  .plate {
     flex-direction: column;
     align-items: center;
     min-height: 0;
     padding: 44px 24px;
-    border-radius: 28px;
-  }
-
-  .hero__content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 0;
-    max-width: 420px;
-    width: 100%;
     text-align: center;
+    gap: 32px;
   }
-
-  .hero__title { font-size: 40px; line-height: 44px; }
-
-  .hero__text { font-size: 16px; line-height: 24px; }
-
-  .badge { margin-top: 24px; }
+  .plate__content { width: 100%; max-width: 420px; flex: none; align-items: center; text-align: center; }
+  .app__intro { align-items: center; }
+  .app--god .plate { min-height: 0; }
 
   .phones {
     position: static;
+    transform: none;
+    width: 100%;
+    max-width: 268px;
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
     gap: 16px;
-    align-self: center;
-    width: 100%;
-    max-width: 268px;
-    margin: 24px 0 0;
     aspect-ratio: auto;
   }
+  .phone { position: static; width: 100%; }
+  .phone--back { order: 2; }
+  .phone--front { order: 1; }
 
-  .phone {
-    position: static;
-    width: 100%;
-    box-shadow: 0 20px 40px rgba(15, 15, 26, 0.24);
-  }
-
-  .footer {
-    justify-content: center;
-    padding: 24px 0 0;
-  }
+  .ipad { position: static; transform: none; width: 100%; max-width: 520px; margin: 0 auto; }
 }
 
-@media (max-width: 380px) {
-  .hero { padding: 36px 16px; }
-  .hero__title { font-size: 34px; line-height: 38px; }
+/* ---------------------------------------------------------------- mobile */
+
+@media (max-width: 620px) {
+  :root { --gutter: 16px; }
+
+  .nav { width: 100%; justify-content: center; gap: 20px; }
+
+  .hero { padding: 28px 16px 48px; border-radius: 0; }
+  .hero__title { font-size: 44px; }
+  .hero__lede { font-size: 16px; }
+
+  .app__title--chess,
+  .app__title--god { font-size: 44px; }
+  .app__title--shapes { font-size: 42px; }
+  .app__desc { font-size: 16px; }
+}
+
+/* ------------------------------------------------------- reduced motion */
+
+@media (prefers-reduced-motion: reduce) {
+  .badge { transition: none; }
+  .hero__title mark::before { animation: none; transform: scaleX(1); }
+  .js .js-reveal { transition: none; opacity: 1; transform: none; }
 }

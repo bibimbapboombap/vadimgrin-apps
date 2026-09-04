@@ -1,20 +1,27 @@
 # vadimgrin.com/apps
 
-Static landing pages for my iOS apps. Plain HTML and CSS — no build step, no
-JavaScript, no dependencies.
+Static landing hub for my iOS apps. Plain HTML and CSS with one tiny vanilla-JS
+file for the scroll reveal — no build step, no framework, no dependencies.
 
 Live at <https://vadimgrin.com/apps>.
 
 ## Contents
 
 ```
-index.html               Just Chess Clock landing page
+index.html               Just Apps hub — Chess Clock, Shapes, God Mode
 styles.css
+apps.js                  Scroll-reveal (progressive: content shows without JS)
 assets/                  Exported from Figma ("My Apps" file)
-privacy-policy/
-├── index.html           Privacy policy — served at /apps/privacy-policy
+privacy-policy/          Just Chess Clock policy — /apps/privacy-policy
+├── index.html
+└── styles.css
+privacy-policy-shapes/   Just Shapes policy — /apps/privacy-policy-shapes
+├── index.html           (DRAFT — see the [VERIFY] notes inside)
 └── styles.css
 ```
+
+Design and header behaviour (pill nav, the yellow marker on "Apps", the
+scroll-reveal) mirror the `/consult` pages in the `vadim/` WordPress theme.
 
 ## Deploying
 
@@ -62,8 +69,8 @@ token makes the change go live immediately, with no purge.
 re-upload the HTML files along with the changed asset:
 
 ```bash
-OLD=20260721; NEW=$(date +%Y%m%d)
-sed -i '' "s/?v=$OLD/?v=$NEW/g" index.html privacy-policy/index.html
+OLD=20260904; NEW=$(date +%Y%m%d)
+sed -i '' "s/?v=$OLD/?v=$NEW/g" index.html privacy-policy/index.html privacy-policy-shapes/index.html
 ```
 
 HTML files themselves are not cached by Cloudflare (they return
@@ -71,6 +78,15 @@ HTML files themselves are not cached by Cloudflare (they return
 
 ## Notes
 
-- Fonts are Podkova (headings) and Inter (body), loaded from Google Fonts.
-- The App Store button links to `#` until the app is live.
-- Support links to `mailto:vadym.gryn@gmail.com`.
+- Fonts (Google Fonts): each app title uses its own face — Bricolage Grotesque
+  (hero), Podkova (Chess Clock), Asap (Shapes), IM Fell English (God Mode);
+  Gabarito for nav/labels/lede, Inter for app descriptions.
+- Nav pill: `Just Apps` is the current page, `developer` → vadimgrin.com,
+  `Support` → `mailto:vadym.gryn@gmail.com`.
+- **Placeholders still to fill:** the Just Shapes App Store link, the three
+  footer social links (LinkedIn / Substack / Medium), and the Just Shapes
+  privacy text (see `privacy-policy-shapes/` [VERIFY] notes). All are `#` or
+  draft until provided.
+- `hero-sky.jpg` and `god-ipad.jpg` were re-compressed from the raw Figma
+  exports (968 KB → 122 KB; 497 KB PNG → 37 KB JPG flattened on the plate
+  colour). Keep them optimised if re-exported.
