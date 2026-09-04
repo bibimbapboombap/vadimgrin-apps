@@ -81,8 +81,14 @@ HTML files themselves are not cached by Cloudflare (they return
 - Fonts (Google Fonts): each app title uses its own face — Bricolage Grotesque
   (hero), Podkova (Chess Clock), Asap (Shapes), IM Fell English (God Mode);
   Gabarito for nav/labels/lede, Inter for app descriptions.
-- Nav pill: `Just Apps` is the current page, `developer` → vadimgrin.com,
-  `Support` → `mailto:vadym.gryn@gmail.com`.
+- Nav pill: sticky at 48px from the top on a transparent, click-through band.
+  `Just Apps` anchors back to the top, `Developer` → vadimgrin.com,
+  `Support` → `mailto:vadym.gryn@gmail.com`. All three share one style.
+- Do **not** put `overflow-x` on `html`/`body` — it turns them into a scroll
+  container and silently breaks the sticky nav.
+- Social preview: `assets/social-preview.jpg` (1200×630, from the Figma
+  `Social-Preview-Apps` frame), wired to og: and twitter: tags. The URLs there
+  are absolute, so they need updating if the page ever moves.
 - **Placeholders still to fill:** the Just Shapes App Store link, the three
   footer social links (LinkedIn / Substack / Medium), and the Just Shapes
   privacy text (see `privacy-policy-shapes/` [VERIFY] notes). All are `#` or

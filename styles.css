@@ -26,15 +26,18 @@ html {
   -webkit-text-size-adjust: 100%;
   color-scheme: light;
   background: var(--bg);
+  scroll-behavior: smooth;
 }
 
+/* NB: no overflow-x on html/body — it would turn them into a scroll container
+   and silently break the sticky nav. The hero is full-bleed via width, not
+   100vw, so nothing overflows anyway. */
 body {
   margin: 0;
   background: var(--bg);
   color: var(--ink);
   font-family: "Gabarito", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;   /* guards the full-bleed hero on narrow screens */
 }
 
 img { display: block; max-width: 100%; height: auto; }
@@ -50,15 +53,29 @@ img { display: block; max-width: 100%; height: auto; }
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
 }
 
 .masthead__logo { display: block; line-height: 0; border-radius: 8px; }
 .masthead__logo img { width: 144px; height: auto; }
 .masthead__logo:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; }
 
+/* Sticky dock — a direct child of <body> so the nav stays stuck for the whole
+   page (inside .masthead it would unstick as soon as the header scrolled by).
+   The band itself is transparent and click-through; only the pill is solid. */
+.nav-dock {
+  position: sticky;
+  top: 48px;
+  z-index: 20;
+  margin-top: 20px;
+  padding: 0 var(--gutter);
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+
 /* nav pill */
 .nav {
+  pointer-events: auto;
   display: inline-flex;
   align-items: center;
   gap: 24px;
@@ -76,7 +93,6 @@ img { display: block; max-width: 100%; height: auto; }
   transition: color 0.15s ease;
 }
 
-.nav__item.is-active { color: var(--ink); font-weight: 500; }
 .nav__item:hover,
 .nav__item:focus-visible { color: var(--ink); }
 
@@ -272,6 +288,8 @@ img { display: block; max-width: 100%; height: auto; }
   white-space: nowrap;   /* the fixed 178px is sized for one line */
   color: var(--tag-ink);
 }
+/* Bare glyph — the design has no plate behind it (the white fill on the
+   Figma "Code" frame is switched off). */
 .tag__icon {
   flex: 0 0 24px;
   display: inline-flex;
@@ -279,11 +297,9 @@ img { display: block; max-width: 100%; height: auto; }
   justify-content: center;
   width: 24px;
   height: 24px;
-  background: #fff;
-  border-radius: 6px;
   color: #000;
 }
-.tag__icon svg { width: 18px; height: 18px; }
+.tag__icon svg { display: block; width: 24px; height: 24px; }
 
 /* ---------------------------------------------------------- phone mockups
    Percentage-sized so the overlapping stack scales as one unit, matching the
@@ -393,6 +409,16 @@ img { display: block; max-width: 100%; height: auto; }
   .app__intro { align-items: center; }
   .app--god .plate { min-height: 0; }
 
+  /* Type scale from the 390px mock: titles stay centred, body copy reads
+     left-aligned in a full-width block. */
+  .app__copy { width: 100%; }
+  .hero__title { font-size: 48px; }
+  .hero__lede { font-size: 16px; line-height: 1.5; }
+  .app__title--chess,
+  .app__title--shapes,
+  .app__title--god { font-size: 40px; text-align: center; }
+  .app__desc { font-size: 16px; line-height: 24px; text-align: left; }
+
   .phones {
     position: static;
     transform: none;
@@ -422,21 +448,16 @@ img { display: block; max-width: 100%; height: auto; }
 @media (max-width: 620px) {
   :root { --gutter: 16px; }
 
+  /* Full-width pill, as in the 390px mock. */
   .nav { width: 100%; justify-content: center; gap: 20px; }
 
   .hero { padding: 32px 16px 48px; }
-  .hero__title { font-size: 44px; }
-  .hero__lede { font-size: 16px; }
-
-  .app__title--chess,
-  .app__title--god { font-size: 44px; }
-  .app__title--shapes { font-size: 42px; }
-  .app__desc { font-size: 16px; }
 }
 
 /* ------------------------------------------------------- reduced motion */
 
 @media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
   .badge { transition: none; }
   .js .masthead__logo,
   .js .nav,
