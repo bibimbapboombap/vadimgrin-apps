@@ -16,7 +16,7 @@ privacy-policy/          Just Chess Clock policy — /apps/privacy-policy
 ├── index.html
 └── styles.css
 privacy-policy-shapes/   Just Shapes policy — /apps/privacy-policy-shapes
-├── index.html           (DRAFT — see the [VERIFY] notes inside)
+├── index.html
 └── styles.css
 ```
 
@@ -89,9 +89,8 @@ HTML files themselves are not cached by Cloudflare (they return
 - Social preview: `assets/social-preview.jpg` (1200×630, from the Figma
   `Social-Preview-Apps` frame), wired to og: and twitter: tags. The URLs there
   are absolute, so they need updating if the page ever moves.
-- **Still outstanding:** the Just Shapes privacy copy is a draft — see the
-  [VERIFY] notes in `privacy-policy-shapes/index.html`. Both App Store links
-  and the three footer social links are live.
+- Both apps are live on the App Store and all links (store, social, privacy)
+  point at real destinations. Nothing is left as a placeholder.
 - `hero-sky.jpg` and `god-ipad.jpg` were re-compressed from the raw Figma
   exports (968 KB → 122 KB; 497 KB PNG → 37 KB JPG flattened on the plate
   colour). Keep them optimised if re-exported.
