@@ -260,11 +260,9 @@ img { display: block; max-width: 100%; height: auto; }
   transition: opacity 0.15s ease, transform 0.1s ease;
 }
 .badge img { width: 180px; height: 60px; }
-.badge:not(.badge--nolink):hover { opacity: 0.85; }
-.badge:not(.badge--nolink):active { opacity: 1; transform: translateY(1px); }
+.badge:hover { opacity: 0.85; }
+.badge:active { opacity: 1; transform: translateY(1px); }
 .badge:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
-/* Shapes badge is shown but not yet linked. */
-.badge--nolink { cursor: default; }
 
 .plate__privacy {
   font-size: 16px;

@@ -69,7 +69,7 @@ token makes the change go live immediately, with no purge.
 re-upload the HTML files along with the changed asset:
 
 ```bash
-OLD=20260904; NEW=$(date +%Y%m%d)
+OLD=20260909; NEW=$(date +%Y%m%d)
 sed -i '' "s/?v=$OLD/?v=$NEW/g" index.html privacy-policy/index.html privacy-policy-shapes/index.html
 ```
 
@@ -89,10 +89,9 @@ HTML files themselves are not cached by Cloudflare (they return
 - Social preview: `assets/social-preview.jpg` (1200×630, from the Figma
   `Social-Preview-Apps` frame), wired to og: and twitter: tags. The URLs there
   are absolute, so they need updating if the page ever moves.
-- **Placeholders still to fill:** the Just Shapes App Store link, the three
-  footer social links (LinkedIn / Substack / Medium), and the Just Shapes
-  privacy text (see `privacy-policy-shapes/` [VERIFY] notes). All are `#` or
-  draft until provided.
+- **Still outstanding:** the Just Shapes privacy copy is a draft — see the
+  [VERIFY] notes in `privacy-policy-shapes/index.html`. Both App Store links
+  and the three footer social links are live.
 - `hero-sky.jpg` and `god-ipad.jpg` were re-compressed from the raw Figma
   exports (968 KB → 122 KB; 497 KB PNG → 37 KB JPG flattened on the plate
   colour). Keep them optimised if re-exported.
