@@ -63,3 +63,62 @@
     // Last-resort guarantee: nothing stays hidden for good.
     window.setTimeout(function () { items.forEach(show); }, 2500);
 })();
+
+/**
+ * Auto-hiding nav — same behaviour as the vadimgrin.com homepage header.
+ * Scrolling down (once the pill has reached its sticky position) slides it
+ * away; any scroll up brings it back. Near the top it always shows.
+ */
+(function () {
+    "use strict";
+
+    var dock = document.querySelector(".nav-dock");
+    if (!dock) { return; }
+
+    var TOP_OFFSET = 48;   /* matches .nav-dock { top } */
+    var TOLERANCE = 4;     /* ignore tiny moves, e.g. iOS rubber-banding */
+    var last = window.scrollY || 0;
+    var ticking = false;
+
+    var masthead = document.querySelector(".masthead");
+
+    function stickPoint() {
+        /* Scroll position at which the dock becomes stuck. Measured from the
+           masthead above it, not from the dock itself: on a sticky element
+           offsetTop follows the stuck position, so it would always equal the
+           current scroll and the nav could never hide. */
+        var above = masthead
+            ? masthead.getBoundingClientRect().bottom + window.scrollY
+            : 0;
+        var gap = parseFloat(window.getComputedStyle(dock).marginTop) || 0;
+        return above + gap - TOP_OFFSET;
+    }
+
+    function update() {
+        ticking = false;
+        var current = Math.max(window.scrollY, 0);
+        var delta = current - last;
+
+        if (current <= stickPoint()) {
+            dock.classList.remove("is-hidden");
+        } else if (delta > TOLERANCE) {
+            dock.classList.add("is-hidden");
+        } else if (delta < -TOLERANCE) {
+            dock.classList.remove("is-hidden");
+        }
+
+        if (Math.abs(delta) > TOLERANCE) { last = current; }
+    }
+
+    window.addEventListener("scroll", function () {
+        if (!ticking) {
+            ticking = true;
+            window.requestAnimationFrame(update);
+        }
+    }, { passive: true });
+
+    /* Keyboard users tabbing into a hidden nav should see it. */
+    dock.addEventListener("focusin", function () {
+        dock.classList.remove("is-hidden");
+    });
+})();

@@ -69,7 +69,7 @@ token makes the change go live immediately, with no purge.
 re-upload the HTML files along with the changed asset:
 
 ```bash
-OLD=20260909; NEW=$(date +%Y%m%d)
+OLD=20260915; NEW=$(date +%Y%m%d)
 sed -i '' "s/?v=$OLD/?v=$NEW/g" index.html privacy-policy/index.html privacy-policy-shapes/index.html
 ```
 
@@ -81,9 +81,10 @@ HTML files themselves are not cached by Cloudflare (they return
 - Fonts (Google Fonts): each app title uses its own face — Bricolage Grotesque
   (hero), Podkova (Chess Clock), Asap (Shapes), IM Fell English (God Mode);
   Gabarito for nav/labels/lede, Inter for app descriptions.
-- Nav pill: sticky at 48px from the top on a transparent, click-through band.
-  `Just Apps` anchors back to the top, `Developer` → vadimgrin.com,
-  `Support` → `mailto:vadym.gryn@gmail.com`. All three share one style.
+- Nav pill: sticky at 48px from the top on a transparent, click-through band,
+  and auto-hides like the vadimgrin.com homepage header — slides away on
+  scroll-down, returns on scroll-up (`apps.js`). `Just Apps` anchors back to
+  the top, `Support` → `mailto:vadym.gryn@gmail.com`.
 - Do **not** put `overflow-x` on `html`/`body` — it turns them into a scroll
   container and silently breaks the sticky nav.
 - Social preview: `assets/social-preview.jpg` (1200×630, from the Figma

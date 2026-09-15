@@ -71,6 +71,15 @@ img { display: block; max-width: 100%; height: auto; }
   display: flex;
   justify-content: center;
   pointer-events: none;
+  transition: transform 0.35s var(--ease);
+}
+
+/* Auto-hide, like the vadimgrin.com homepage header: apps.js adds .is-hidden
+   on scroll-down and removes it on scroll-up. The dock sits 48px below the
+   top, so it has to travel its own height plus that offset (and a little
+   more for the pill's shadow) to clear the viewport. */
+.nav-dock.is-hidden {
+  transform: translateY(calc(-100% - 64px));
 }
 
 /* nav pill */
@@ -470,6 +479,7 @@ img { display: block; max-width: 100%; height: auto; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
+  .nav-dock { transition: none; }
   .badge { transition: none; }
   .js .masthead__logo,
   .js .nav,
