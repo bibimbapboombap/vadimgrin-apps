@@ -15,6 +15,20 @@
   --marker: #fee194;   /* hero highlight */
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   --gutter: 24px;
+  /* Header geometry, copied from the vadimgrin.com homepage so the two pages
+     line up when you move between them (measured there at 1440 and 390):
+       - the logo strip is 144px tall, with the 120px logo 54px from the top;
+       - the menu pill sits 32px into the hero photo;
+       - the hero copy starts 32px below the pill.
+     The mobile values are set in the max-width: 767.98px block below. */
+  --masthead-h: 144px;
+  --logo-top: 54px;
+  --dock-gap: 32px;
+  --hero-gap: 32px;
+  /* The pill's own height: 17px padding either side of one 16px/1.2 line. The
+     hero is pulled up by --dock-gap + --nav-pill so the photo starts right under
+     the logo strip and runs behind the pill. */
+  --nav-pill: calc(17px * 2 + 16px * 1.2);
   color-scheme: light;
 }
 
@@ -48,15 +62,18 @@ img { display: block; max-width: 100%; height: auto; }
   position: relative;
   z-index: 2;
   max-width: 1200px;
+  height: var(--masthead-h);
   margin: 0 auto;
-  padding: 16px var(--gutter) 0;
+  padding: var(--logo-top) var(--gutter) 0;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
+/* The bare mark (logo-mark.svg), the same file the homepage uses, at the
+   homepage's 120px. */
 .masthead__logo { display: block; line-height: 0; border-radius: 8px; }
-.masthead__logo img { width: 144px; height: auto; }
+.masthead__logo img { width: 120px; height: auto; }
 .masthead__logo:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; }
 
 /* Sticky dock — a direct child of <body> so the nav stays stuck for the whole
@@ -66,7 +83,7 @@ img { display: block; max-width: 100%; height: auto; }
   position: sticky;
   top: 48px;
   z-index: 20;
-  margin-top: 20px;
+  margin-top: var(--dock-gap);
   padding: 0 var(--gutter);
   display: flex;
   justify-content: center;
@@ -106,29 +123,33 @@ img { display: block; max-width: 100%; height: auto; }
 .nav__item:focus-visible { color: var(--ink); }
 
 /* -------------------------------------------------------------------- hero
-   Full-bleed band (like /consult): the sky photo covers the whole width, the
-   text sits centred over it, and a wash at the top blends into the masthead. */
+   Built to the homepage's proportions, so the two read as one site: the photo
+   starts directly under the logo and runs behind the menu pill, the copy sits
+   32px below the pill, and the band is 458px tall — or 16 / 24 / 410px under
+   768px — the same figures vadimgrin.com uses. A wash at the top blends it into the
+   masthead. */
 
 .hero {
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  margin-top: 24px;
-  /* Top-aligned rather than centred, so the copy sits high in the band with
-     the sky and skyline below it — and so the gap under the nav is exactly
-     margin-top + padding-top (24 + 40 = 64) instead of being halved by
-     centring slack. */
-  padding: 40px var(--gutter) 72px;
-  min-height: 348px;
+  /* Pulled up by the dock's whole block, then padded back down past it, so the
+     photo sits under the sticky pill without moving the copy. */
+  margin-top: calc(-1 * (var(--dock-gap) + var(--nav-pill)));
+  /* Top-aligned rather than centred: the copy sits high with the sky and
+     skyline below it, and the gap under the pill stays a fixed 32px instead of
+     growing with centring slack. */
+  padding: calc(var(--dock-gap) + var(--nav-pill) + var(--hero-gap)) var(--gutter) 72px;
+  min-height: 458px;
   display: flex;
   align-items: flex-start;
   justify-content: center;
 }
 
 .hero__bg { position: absolute; inset: 0; z-index: -1; }
-/* hero-sky.jpg is already the crop from the design (1200x348). Anchored to the
-   bottom so the city skyline stays in frame at every width — any trimming
-   `cover` has to do comes off the sky at the top instead. */
+/* Anchored to the bottom so the city skyline stays in frame at every width —
+   any trimming `cover` has to do comes off the sky at the top, whose rows are
+   already the page's own near-white. */
 .hero__bg img { width: 100%; height: 100%; object-fit: cover; object-position: center bottom; }
 
 /* Wash so the top of the photo fades out of the masthead's ground. */
@@ -458,6 +479,19 @@ img { display: block; max-width: 100%; height: auto; }
   .footer { margin-top: 32px; }
 }
 
+/* ------------------------------------------------ hero height, as home */
+
+@media (max-width: 767.98px) {
+  :root {
+    --masthead-h: 120px;
+    --logo-top: 38px;
+    --dock-gap: 16px;
+    --hero-gap: 24px;
+  }
+
+  .hero { min-height: 410px; }
+}
+
 /* ---------------------------------------------------------------- mobile */
 
 @media (max-width: 620px) {
@@ -466,7 +500,7 @@ img { display: block; max-width: 100%; height: auto; }
   /* Pill hugs its content, same as desktop. */
   .nav { gap: 20px; }
 
-  .hero { padding: 32px 16px 48px; min-height: 264px; }
+  .hero { padding: calc(var(--dock-gap) + var(--nav-pill) + var(--hero-gap)) 16px 48px; }
 
   /* Title comes down on phones; the lede stays at its 18px desktop size. */
   .hero__title { font-size: 44px; }
